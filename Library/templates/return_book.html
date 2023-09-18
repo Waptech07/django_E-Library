@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(#6affa8, #d5f57f);
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+</style>
+{% for message in messages %}
+<div class="alert alert-{{message.tags}} rounded-0" role="alert">
+  {{message}}
+</div>
+{% endfor %}
+
+<h1 class="display-5 text-center m-4 fw-bold">Books you have issued</h1>
+
+<div class="input-group container">
+  <input id="search" type="search" class="form-control rounded" placeholder="Search Book" aria-label="Search"
+    aria-describedby="search-addon" />
+</div>
+
+<div class="container mt-3">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Book Image</th>
+        <th scope="col">Book Name</th>
+        <th scope="col">Author Name</th>
+        <th scope="col">Read Online</th>
+        <th scope="col">
+          <div class="text-center">Download</div>
+        </th>
+        <th scope="col">
+          <div class="text-center">Return Book</div>
+        </th>
+      </tr>
+    </thead>
+    <tbody id="table_data">
+      {% for book in books %}
+      <tr>
+        <td><img src="{{book.image.url}}" alt="{{book.book_name}} image" width="100px" class="img-fluid"></td>
+        <td>{{book.book_name}}</td>
+        <td>{{book.author_name}}</td>
+        <td><a href="{% url 'read_book' book.id %}" class="btn btn-primary" id="read_online">Read</a></td>
+        <td>
+          <div class="text-center">
+            <a href="{% url 'read_book' book.id %}" class="btn btn-success" download><i class="fa fa-download"
+                aria-hidden="true"></i></a>
+          </div>
+        </td>
+        <td>
+          <div class="text-center">
+            <form action="{% url 'return_book' %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="book_id" value="{{book.id}}" />
+              <button type="submit" class="btn btn-outline-success btn-sm">Return</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+  // search for books
+  $(document).ready(function () {
+    $("#search").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $("#table_data tr").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      });
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(#79d4f8, #5bf3f8);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+</style>
+
+<h1 class="display-5 text-center m-4 fw-bold">Your History</h1>
+
+<div class="container">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Book Name</th>
+        <th scope="col">Author Name</th>
+        <th scope="col">Issue Date</th>
+        <th scope="col">Return Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in books %}
+      <tr>
+        <td>{{book.book_id.book_name}}</td>
+        <td>{{book.book_id.author_name}}</td>
+        <td>{{book.issue_date}}</td>
+        <td>{{book.return_date}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="mx-auto w-25">
+  <nav aria-label="...">
+    <ul class="pagination ms-10">
+      {% if books.has_previous %}
+      <li class="page-item active">
+        <a class="page-link" href="?page={{books.previous_page_number}}" tabindex="-1">&laquo;</a>
+      </li>
+      {% endif %} {% for i in "x"|ljust:books.paginator.num_pages %}
+      <li class="page-item {% if forloop.counter == books.number %}active{% endif %}">
+        <!-- Show the link if there are more than 1 page -->
+
+        {% if books.paginator.num_pages > 1 %}
+        <a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a>
+        {% endif %}
+      </li>
+      {% endfor %} {% if books.has_next %}
+      <li class="page-item active">
+        <a class="page-link" href="?page={{books.next_page_number}}">&raquo;</a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+
+{% endblock %}

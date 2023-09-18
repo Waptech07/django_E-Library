@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+  <h2 class="text-center m-4 fw-bold">Your Profile</h2>
+  <!-- User Profile Content -->
+  <div class="container my-5">
+    <div class="row">
+      <!-- User Profile Header -->
+      <div class=" card col-lg-8 bg-light mb-4">
+        <header class="py-5">
+          <div>
+            <div class="card-body">
+              <div class="container text-center">
+                <a class="navbar-brand fw-bold" href="{% url 'view_profile' %}"><img
+                    src="../../media/profile_images/profile-image.png" alt="profile" width="75" height="75"
+                    class="img-fluid" id="profile-img"></a>
+
+                <h1>{{user.first_name}} {{user.last_name}}</h1>
+
+                {% if user.is_staff %}
+                <a class="btn btn-outline-success" href="/library-admin">Admin</a>
+                <a class="btn btn-outline-primary" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                <p class="lead">Library Member</p>
+                <a href="{% url 'change_password' %}">Change Password</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </header>
+      </div>
+      <!-- User Info -->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">User Information</h3>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><strong>Username: </strong> {{user.username}}</li>
+              <li class="list-group-item"><strong>Email: </strong> {{user.email}}</li>
+              <li class="list-group-item"><strong>Join Date: </strong> {{user.date_joined}}</li>
+            </ul>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6 w-50">
+                  <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+                </div>
+                <div class="col-md-6 w-50">
+                  {% if user.is_staff %}
+                  <a href="/library-admin">Login as admin</a>
+                  {% else %}
+                  <a href="{% url 'logout' %}">Logout</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Borrowed Books -->
+  <div class="container">
+    <h3 class="mb-3 fw-bold">Borrowed Books</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Issue Date</th>
+          <th>Return Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in books %}
+        <tr>
+          <td>{{book.book_id.book_name}}</td>
+          <td>{{book.book_id.author_name}}</td>
+          <td>{{book.issue_date}}</td>
+          <td>{{book.return_date}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a class="btn btn-primary mb-5 text-white text-decoration-none w-100 fw-bold" href="{% url 'history' %}">View
+      More</a>
+  </div>
+</div>
+{% endblock %}

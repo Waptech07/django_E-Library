@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="text-center m-3">Welcome, Guest User!</h2>
+<style>
+  body {
+    background: #ddd;
+  }
+</style>
+
+<div class="container mb-3 p-3">
+  <div class="jumbotron text-center">
+    <h1>Welcome to the Online E-Library</h1>
+    <p>Explore a world of knowledge at your fingertips</p>
+  </div>
+
+  <div class="library-section">
+    <h2>About Us</h2>
+    <p>Our online e-library is committed to providing a vast collection of books and resources for all your reading
+      needs. Whether you're a student, researcher, or simply a book lover, we have something for everyone.</p>
+    <p>You can explore some limited features as a guest user. Consider <a href="{% url 'login' %}">logging in</a> or <a
+        href="{% url 'register' %}">registering</a> to access more
+      features.</p>
+  </div>
+
+  <div class="library-section">
+    <h2>Library Timings</h2>
+    <p>Our library is open for your convenience:</p>
+    <ul>
+      <li><strong>Monday - Friday:</strong> 9:00 AM - 6:00 PM</li>
+      <li><strong>Saturday:</strong> 10:00 AM - 4:00 PM</li>
+      <li><strong>Sunday:</strong> Closed</li>
+    </ul>
+  </div>
+
+  <div class="library-section">
+    <h2>Available Books</h2>
+    <div class="row">
+      {% for book in books %}
+      <div class="col-md-3 justify-center book-card mb-4">
+        <div class="card">
+          <img src="{{ book.image.url }}" alt="{{ book.book_name }} Image" class="img-fluid card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">{{book.book_name}}</h5>
+            <p class="card-text">{{book.author_name}}</p>
+            <a href="{% url 'return_book' %}" class="btn btn-primary">Read</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center">
+      <a href="{% url 'login' %}" class="text-decoration-none fw-bold btn btn-primary">Login to Read Books Online</a>
+    </div>
+  </div>
+
+  <div class="library-section">
+    <h2>Categories</h2>
+    <div class="row">
+      {% for category in categories %}
+      <div class="col-md-2 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title text-center text-dark">{{category.category_name}}</h5>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="contact-section">
+    <h2>Contact Us</h2>
+    <p>If you have any inquiries or need assistance, please feel free to contact us using our <a
+        href="{% url 'contact_us' %}">contact form</a>.</p>
+  </div>
+</div>
+
+
+{% endblock %}

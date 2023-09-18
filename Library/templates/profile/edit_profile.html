@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="text-center display-6 m-3">Edit Your Profile</h2>
+<div class="container border border-dark p-3 mt-4 rounded-md" id="form-container">
+  <form action="{% url 'edit_profile' %}" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label><b>First Name</b></label>
+      <input type="text" name="first_name" class="form-control" placeholder="First Name">
+    </div>
+
+    <div class="form-group">
+      <label><b>Last Name</b></label>
+      <input type="text" name="last_name" class="form-control" placeholder="Last Name">
+    </div>
+
+    <div class="form-group">
+      <label><b>Username</b></label>
+      <input type="text" name="username" class="form-control" placeholder="Username">
+    </div>
+
+    <div class="form-group">
+      <label><b>Email</b></label>
+      <input type="text" name="email" class="form-control" placeholder="Email Address">
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3 w-100">Submit</button>
+  </form>
+
+  {% if messages %}
+  <div class="messages mt-3">
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

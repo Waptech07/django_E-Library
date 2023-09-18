@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+  /* Add your custom CSS here */
+  body {
+    background: #f8f9fa;
+  }
+
+  .jumbotron {
+    background-size: cover;
+    color: #fff;
+    text-align: center;
+    padding: 100px 0;
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+
+  .jumbotron h1 {
+    font-size: 3rem;
+  }
+
+  .jumbotron p {
+    font-size: 1.5rem;
+  }
+
+  .box-container {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  #read_online {
+    width: 70%;
+  }
+
+  #download {
+    width: 20%;
+    margin-left: 10%;
+  }
+</style>
+
+<!-- Jumbotron (Hero Section) -->
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-4">Welcome to the Online E-Library</h1>
+    <p class="lead">Explore a vast collection of books, articles, and more.</p>
+    <div class="box-container">
+      <div class="banner my-2">
+        <img src="media\library-banner_2.jpg" class="img-fluid w-100" alt="Banner">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Featured Books Section -->
+<section class="container">
+  <h2 class="text-center m-4">Featured Books</h2>
+  <div class="row">
+    {% for book in books %}
+    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+      <div class="card">
+        <img src="{{ book.image.url }}" alt="{{ book.book_name }} Image" class="img-fluid card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{book.book_name}}</h5>
+          <p class="card-text">Author: {{book.author_name}}</p>
+          <div class="container">
+            {% if user.is_authenticated %}
+            <div class="row">
+              <a href="{% url 'read_book' book.id %}" class="btn btn-primary" id="read_online">Read Online</a>
+              <a href="{% url 'read_book' book.id %}" class="btn btn-success" id="download" download><i
+                  class="fa fa-download" aria-hidden="true"></i></a>
+            </div>
+            {% else %}
+            <div>
+              <a href="{% url 'issue' %}" class="btn btn-primary w-100">GET BOOK</a>
+            </div>
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <h2 class="text-center m-4">Categories</h2>
+  <div class="row">
+    {% for category in categories %}
+    <div class="col-md-2 col-sm-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center"><a href="{% url 'issue' %}" class="text-decoration-none">{{category.category_name}}</a></h5>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <section class="container-fluid bg-light my-5 py-3">
+    <div class="container-fluid">
+      <div class="banner my-2">
+        <img src="media\library-banner.jpg" class="img-fluid w-100" alt="Banner">
+      </div>
+    </div>
+  </section>
+
+  <h2 class="text-center mb-4">More Content</h2>
+  <div class="row">
+    <!-- Download Section -->
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Download Books</h5>
+          <p class="card-text">Access downloadable books. Download Books from the return books page.</p>
+          <a href="{% url 'issue' %}" class="btn btn-primary">Get Books</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Tutorials Section -->
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Video Tutorials</h5>
+          <p class="card-text">Learn from experts with our video tutorials.</p>
+          <a href="https://www.youtube.com/results?search_query=book+tutorials" class="btn btn-primary">Watch Now</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Us Section -->
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Contact Us</h5>
+          <p class="card-text">Have questions or feedback? Reach out to us.</p>
+          <a href="{% url 'contact_us' %}" class="btn btn-primary">Contact</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-light text-center py-3">
+  <div class="container">
+    <p>&copy; 2023 E-Library Management</p>
+  </div>
+</footer>
+
+</body>
+
+</html>
+
+{% endblock %}

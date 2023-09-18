@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for message in messages %}
+<div class="alert alert-{{message.tags}} rounded-0" role="alert">
+  {{message}}
+</div>
+{% endfor %}
+
+<h1 class="display-5 text-center m-4 fw-bold">Available Books</h1>
+
+<div class="input-group container">
+  <input id="search" type="search" class="form-control rounded" placeholder="Search For Book" aria-label="Search"
+    aria-describedby="search-addon" />
+</div>
+
+<div class="container mt-3">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th class="" scope="col">Book Image</th>
+        <th class="" scope="col">Book Name</th>
+        <th class="" scope="col">Author Name</th>
+        <th class="" scope="col">Subject</th>
+        <th class="" scope="col">
+          <div class="text-center">Get Book</div>
+        </th>
+      </tr>
+    </thead>
+    <tbody id="table_data">
+      {% for book in books %}
+      <tr>
+        <td><img src="{{ book.image.url }}" alt="{{ book.book_name }} image" width="100px" class="img-fluid"></td>
+        <td>{{book.book_name}}</td>
+        <td>{{book.author_name}}</td>
+        <td>{{book.subject}}</td>
+        <td>
+          <div class="text-center">
+            <form action="{% url 'issue' %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="book_id" value="{{book.id}}" />
+              <button type="submit" class="btn btn-outline-success btn-sm">
+                <b>Get</b>
+              </button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+  // search for books
+  $(document).ready(function () {
+    $("#search").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $("#table_data tr").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      });
+    });
+  });
+</script>
+{% endblock %}
